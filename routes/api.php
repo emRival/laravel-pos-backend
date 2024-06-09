@@ -12,3 +12,6 @@ Route::get('/user', function (Request $request) {
 Route::post('/login', [UserController::class, 'loginuser']);
 
 Route::apiResource('api-products', ProductController::class)->middleware('auth:sanctum');
+
+//logout
+Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');

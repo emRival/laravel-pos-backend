@@ -13,12 +13,27 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        // paginate the products
+        $products = Product::query()->orderBy('created_at', 'desc')->paginate(10);
+
+        $customProducts = $products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'category' => $product->category,
+                'price' => $product->price,
+                'stock' => $product->stock,
+                'description' => $product->description,
+                'image' => url('storage/products/' . $product->image),
+                'created_at' => $product->created_at,
+                'updated_at' => $product->updated_at
+            ];
+        });
 
         return response()->json([
             'message' => 'success',
             'status' => '200',
-            'data' => $products
+            'data' => $customProducts
         ]);
     }
 
